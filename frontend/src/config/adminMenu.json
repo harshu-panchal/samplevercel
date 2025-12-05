@@ -1,0 +1,168 @@
+[
+  {
+    "title": "Dashboard",
+    "route": "/admin/dashboard",
+    "children": []
+  },
+  {
+    "title": "Orders",
+    "route": "/admin/orders",
+    "children": [
+      "All Orders",
+      "Order Tracking",
+      "Order Notifications"
+    ]
+  },
+  {
+    "title": "Products",
+    "route": "/admin/products",
+    "children": [
+      "Manage Products",
+      "Add Product",
+      "Bulk Upload",
+      "Tax & Pricing",
+      "Product Ratings",
+      "Product FAQs"
+    ]
+  },
+  {
+    "title": "Attribute Management",
+    "route": "/admin/attributes",
+    "children": [
+      "Attribute Sets",
+      "Attributes",
+      "Attribute Values"
+    ]
+  },
+  {
+    "title": "Categories",
+    "route": "/admin/categories",
+    "children": [
+      "Manage Categories",
+      "Category Order"
+    ]
+  },
+  {
+    "title": "Brands",
+    "route": "/admin/brands",
+    "children": [
+      "Manage Brands"
+    ]
+  },
+  {
+    "title": "Customers",
+    "route": "/admin/customers",
+    "children": [
+      "View Customers",
+      "Addresses",
+      "Transactions"
+    ]
+  },
+  {
+    "title": "Stock Management",
+    "route": "/admin/inventory",
+    "children": []
+  },
+  {
+    "title": "Delivery Management",
+    "route": "/admin/delivery",
+    "children": [
+      "Delivery Boys",
+      "Cash Collection"
+    ]
+  },
+  {
+    "title": "Locations",
+    "route": "/admin/locations",
+    "children": [
+      "Cities",
+      "Zipcodes"
+    ]
+  },
+  {
+    "title": "Offers & Sliders",
+    "route": "/admin/offers",
+    "children": [
+      "Home Sliders",
+      "Festival Offers"
+    ]
+  },
+  {
+    "title": "Promo Codes",
+    "route": "/admin/promocodes",
+    "children": []
+  },
+  {
+    "title": "Notifications",
+    "route": "/admin/notifications",
+    "children": [
+      "Push Notifications",
+      "Custom Messages"
+    ]
+  },
+  {
+    "title": "Support Desk",
+    "route": "/admin/support",
+    "children": [
+      "Live Chat",
+      "Ticket Types",
+      "Tickets"
+    ]
+  },
+  {
+    "title": "Reports",
+    "route": "/admin/reports",
+    "children": [
+      "Sales Report",
+      "Inventory Report"
+    ]
+  },
+  {
+    "title": "Analytics & Finance",
+    "route": "/admin/finance",
+    "children": [
+      "Revenue Overview",
+      "Profit & Loss",
+      "Order Trends",
+      "Payment Breakdown",
+      "Tax Reports",
+      "Refund Reports"
+    ]
+  },
+  {
+    "title": "Store Settings",
+    "route": "/admin/settings/store",
+    "children": [
+      "Store Profile",
+      "Payment Methods",
+      "Shipping Methods"
+    ]
+  },
+  {
+    "title": "Web Settings",
+    "route": "/admin/settings/web",
+    "children": [
+      "Themes",
+      "Languages",
+      "SEO Settings"
+    ]
+  },
+  {
+    "title": "Policies",
+    "route": "/admin/policies",
+    "children": [
+      "Privacy Policy",
+      "Refund Policy",
+      "Terms & Conditions"
+    ]
+  },
+  {
+    "title": "Firebase",
+    "route": "/admin/firebase",
+    "children": [
+      "Push Config",
+      "Authentication"
+    ]
+  }
+]
+

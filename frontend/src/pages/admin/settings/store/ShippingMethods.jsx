@@ -1,0 +1,194 @@
+import { useState } from 'react';
+import { FiTruck, FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import ConfirmModal from '../../../../components/Admin/ConfirmModal';
+import { formatCurrency } from '../../../../utils/adminHelpers';
+import toast from 'react-hot-toast';
+
+const ShippingMethods = () => {
+  const [shippingMethods, setShippingMethods] = useState([
+    { id: 1, name: 'Standard Shipping', cost: 5.99, estimatedDays: '3-5', enabled: true },
+    { id: 2, name: 'Express Shipping', cost: 12.99, estimatedDays: '1-2', enabled: true },
+    { id: 3, name: 'Overnight Shipping', cost: 24.99, estimatedDays: '1', enabled: false },
+  ]);
+  const [editingMethod, setEditingMethod] = useState(null);
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: null });
+
+  const handleSave = (methodData) => {
+    if (editingMethod && editingMethod.id) {
+      setShippingMethods(shippingMethods.map((m) => (m.id === editingMethod.id ? { ...methodData, id: editingMethod.id } : m)));
+      toast.success('Shipping method updated');
+    } else {
+      setShippingMethods([...shippingMethods, { ...methodData, id: shippingMethods.length + 1 }]);
+      toast.success('Shipping method added');
+    }
+    setEditingMethod(null);
+  };
+
+  const handleDelete = () => {
+    setShippingMethods(shippingMethods.filter((m) => m.id !== deleteModal.id));
+    setDeleteModal({ isOpen: false, id: null });
+    toast.success('Shipping method deleted');
+  };
+
+  const toggleMethod = (id) => {
+    setShippingMethods(shippingMethods.map((m) =>
+      m.id === id ? { ...m, enabled: !m.enabled } : m
+    ));
+    toast.success('Shipping method updated');
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-6"
+    >
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="lg:hidden">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Shipping Methods</h1>
+          <p className="text-sm sm:text-base text-gray-600">Configure shipping options and rates</p>
+        </div>
+        <button
+          onClick={() => setEditingMethod({})}
+          className="flex items-center gap-2 px-4 py-2 gradient-green text-white rounded-lg hover:shadow-glow-green transition-all font-semibold text-sm"
+        >
+          <FiPlus />
+          <span>Add Method</span>
+        </button>
+      </div>
+
+      <div className="space-y-4">
+        {shippingMethods.map((method) => (
+          <div key={method.id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                  <FiTruck className="text-primary-600 text-xl" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">{method.name}</h3>
+                  <div className="flex items-center gap-4 mt-1">
+                    <p className="text-sm text-gray-600">Cost: {formatCurrency(method.cost)}</p>
+                    <p className="text-sm text-gray-600">Est. Delivery: {method.estimatedDays} days</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setEditingMethod(method)}
+                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                >
+                  <FiEdit />
+                </button>
+                <button
+                  onClick={() => setDeleteModal({ isOpen: true, id: method.id })}
+                  className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                  <FiTrash2 />
+                </button>
+                <button
+                  onClick={() => toggleMethod(method.id)}
+                  className={`px-4 py-2 rounded-lg font-semibold text-sm transition-colors ${
+                    method.enabled
+                      ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {method.enabled ? 'Enabled' : 'Disabled'}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {editingMethod !== null && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">
+              {editingMethod.id ? 'Edit Shipping Method' : 'Add Shipping Method'}
+            </h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                handleSave({
+                  name: formData.get('name'),
+                  cost: parseFloat(formData.get('cost')),
+                  estimatedDays: formData.get('estimatedDays'),
+                  enabled: formData.get('enabled') === 'true',
+                });
+              }}
+              className="space-y-4"
+            >
+              <input
+                type="text"
+                name="name"
+                defaultValue={editingMethod.name || ''}
+                placeholder="Method Name"
+                required
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+              <input
+                type="number"
+                name="cost"
+                defaultValue={editingMethod.cost || ''}
+                placeholder="Shipping Cost"
+                required
+                step="0.01"
+                min="0"
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+              <input
+                type="text"
+                name="estimatedDays"
+                defaultValue={editingMethod.estimatedDays || ''}
+                placeholder="Estimated Days (e.g., 3-5)"
+                required
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+              <select
+                name="enabled"
+                defaultValue={editingMethod.enabled ? 'true' : 'false'}
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              >
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+              </select>
+              <div className="flex items-center gap-2">
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditingMethod(null)}
+                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      <ConfirmModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, id: null })}
+        onConfirm={handleDelete}
+        title="Delete Shipping Method?"
+        message="Are you sure you want to delete this shipping method? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+      />
+    </motion.div>
+  );
+};
+
+export default ShippingMethods;
+
